@@ -1,12 +1,13 @@
 
-export async function send_data_to_mqtt(dailyConsumption: any) {
+export async function send_data_to_mqtt(meter: string, dailyConsumption: string) {
     const mqtt_payload = {
+        meter,
         consumption: dailyConsumption,
     };
 
     var mqtt = require("mqtt");
 
-    var client = mqtt.connect("mqtt://homeassistant.local:1883", {});
+    var client = mqtt.connect("mqtt://homeassistant.local:1883");
 
     client.on("connect", function () {
         client.subscribe("home/power", function (err: any) {

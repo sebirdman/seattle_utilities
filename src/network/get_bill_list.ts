@@ -11,7 +11,7 @@ export async function get_bill_list(user: any, account: any, token: any) {
       },
       csrId: user.userName,
       type: "Consumption",
-      currentBillDate: "09/16/2020",
+      currentBillDate: account.currentBillDate,
       period: "3",
     };
   

@@ -28,19 +28,21 @@ async function get_scl_account_info(user: any, account: any, token: any) {
           "-" +
           pad(today.getUTCDate());
 
-        const montly_history = await get_monthly_consumption_history(
+        const monthly_meter_history = await get_monthly_consumption_history(
           user,
           one_account,
           token,
           cycle
         );
 
-        console.log(montly_history);
-
-        for (const day of montly_history) {
-          if (day.readDate === day_string) {
-            send_data_to_mqtt(day.billedConsumption);
-            break;
+        for (const meter in monthly_meter_history) {
+          const days = monthly_meter_history[meter];
+          for (const day of days) {
+            if (day.readDate === day_string) {
+              console.log(day);
+              send_data_to_mqtt(meter, day.billedConsumption);
+              break;
+            }
           }
         }
       }
