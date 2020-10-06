@@ -27,6 +27,7 @@ export async function get_bill_list(user: any, account: any, token: any) {
         body: JSON.stringify(list_payload),
       }
     );
+
   
     const account_list_json = await account_list_resp.json();
     return account_list_json.billList;

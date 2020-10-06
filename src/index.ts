@@ -1,17 +1,11 @@
 const fetch = require("node-fetch");
 
 import { send_data_to_mqtt } from "./custom_utils/send_to_mqtt";
+import { pad } from "./custom_utils/utils";
 import { do_login } from "./network/do_login";
 import { get_account_holders } from "./network/get_account_holders"
 import { get_bill_list } from "./network/get_bill_list";
 import { get_monthly_consumption_history } from "./network/get_monthly_consumption_history";
-
-function pad(number: number) {
-  if (number < 10) {
-    return "0" + number;
-  }
-  return number;
-}
 
 async function get_scl_account_info(user: any, account: any, token: any) {
   const account_holders = await get_account_holders(user, token);
@@ -39,7 +33,6 @@ async function get_scl_account_info(user: any, account: any, token: any) {
           const days = monthly_meter_history[meter];
           for (const day of days) {
             if (day.readDate === day_string) {
-              console.log(day);
               send_data_to_mqtt(meter, day.billedConsumption);
               break;
             }

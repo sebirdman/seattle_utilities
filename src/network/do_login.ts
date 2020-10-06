@@ -90,7 +90,6 @@ async function get_utility_user_data(username_temp_uuid: string) {
 }
 
 export async function do_login(raw_username: string, raw_password: string) {
-    console.time("Begin");
     const oracle_identity_endpoint = await get_oracle_identity_url();
     // talk to the oracle identity manager
     let oracle_identity_data = await get_oracle_identity_cookie(oracle_identity_endpoint);
@@ -104,9 +103,6 @@ export async function do_login(raw_username: string, raw_password: string) {
     });
 
     const script_payload = await login_data.text();
-    console.timeEnd("Begin");
-
-    console.time("First")
 
     const dom = new JSDOM(script_payload, {
         url: "https://example.org/",
@@ -115,9 +111,6 @@ export async function do_login(raw_username: string, raw_password: string) {
     const signinAt = dom.window.sessionStorage.getItem("signinAT");
     const baseUri = dom.window.sessionStorage.getItem("baseUri");
     const initialState = dom.window.sessionStorage.getItem("initialState");
-    console.timeEnd("First")
-
-    console.time("Second")
 
     const payload = {
         credentials: {
@@ -177,7 +170,5 @@ export async function do_login(raw_username: string, raw_password: string) {
     const username = final_url_thing.substring(
         final_url_thing.lastIndexOf("/") + 1
     );
-    console.timeEnd("Second")
-
     return get_utility_user_data(username);
 }
